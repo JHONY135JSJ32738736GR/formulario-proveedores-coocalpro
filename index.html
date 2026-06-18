@@ -1079,11 +1079,108 @@
  
 </div><!-- fin .page -->
  
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs-dpReKuvbI7-yGb3qvjnJqEXePxJyWM-B5zTWnemhw7Fu8L487xhhKpq9QocN9D1/exec";
-const OAUTH_CLIENT_ID = "62122164645-p8dfugm67n6vbbr152o0bqvessi7hsc2.apps.googleusercontent.com";
-const DRIVE_FOLDER_NAME = "Formularios Proveedores COOCALPRO";
+ 
+// ---- FIRMA DIGITAL ----
+const canvas = document.getElementById('firmaCanvas');
+const ctx = canvas.getContext('2d');
+let dibujando = false;
+let firmaVacia = true;
+ 
+ctx.strokeStyle = '#000';
+ctx.lineWidth = 1.8;
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+ 
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
+ 
+canvas.addEventListener('mousedown',  e => { dibujando = true; firmaVacia = false; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+canvas.addEventListener('mousemove',  e => { if (!dibujando) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+canvas.addEventListener('mouseup',    () => dibujando = false);
+canvas.addEventListener('mouseleave', () => dibujando = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); dibujando = true; firmaVacia = false; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, {passive:false});
+canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!dibujando) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive:false});
+canvas.addEventListener('touchend',   () => dibujando = false);
+ 
+function limpiarFirma() { ctx.clearRect(0, 0, canvas.width, canvas.height); firmaVacia = true; }
+ 
+// ---- RECOLECTAR DATOS ----
+function recolectarDatos() {
+  const datos = {};
+  document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="number"]').forEach((el, i) => {
+    const label = el.closest('td')?.querySelector('.label')?.textContent?.trim()
+                || el.closest('div')?.querySelector('span')?.textContent?.trim()
+                || ('campo_' + i);
+    if (el.value) datos[label] = el.value;
+  });
+  const radiosVistos = new Set();
+  document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+    if (radiosVistos.has(el.name)) return;
+    radiosVistos.add(el.name);
+    const label = el.closest('td')?.querySelector('.label')?.textContent?.trim()
+                || el.closest('div')?.querySelector('span[style]')?.textContent?.trim()
+                || el.name;
+    datos[label || el.name] = el.value;
+  });
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+    const txt = el.parentElement?.textContent?.trim() || 'checkbox';
+    datos['✔ ' + txt] = 'Sí';
+  });
+  document.querySelectorAll('textarea').forEach((el, i) => {
+    if (el.value) {
+      const label = el.closest('td')?.querySelector('.label')?.textContent?.trim() || ('textarea_' + i);
+      datos[label] = el.value;
+    }
+  });
+  const ccFirma = document.getElementById('cc_firma').value;
+  if (ccFirma) datos['CC/NIT Firmante'] = ccFirma;
+  return datos;
+}
+ 
+// ---- ENVIAR ----
+async function enviarFormulario() {
+  if (firmaVacia) {
+    alert('⚠️ Por favor dibuje la firma del Representante Legal antes de enviar.');
+    canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+ 
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+ 
+  try {
+    const datos         = recolectarDatos();
+    const firmaBase64   = canvas.toDataURL('image/png');
+    const razonSocial   = datos['Nombre o Razón Social'] || 'Proveedor';
+    const ts            = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+ 
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        datos,
+        firma: firmaBase64,
+        nombreProveedor: razonSocial,
+        timestamp: ts
+      })
+    });
+ 
+    document.getElementById('modalExito').classList.add('active');
+  } catch (err) {
+    alert('❌ Error al enviar. Verifique su conexión e intente de nuevo.\n' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar Formulario';
+  }
+}
+</script>
  
 // ---- FIRMA DIGITAL ----
 const canvas = document.getElementById('firmaCanvas');
@@ -1253,23 +1350,5 @@ async function enviarFormulario() {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        datos,
-        linkFormulario: linkDrive,
-        nombreProveedor: razonSocial,
-        timestamp: ts
-      })
-    });
- 
-    document.getElementById('modalExito').classList.add('active');
-  } catch (err) {
-    alert('❌ Error: ' + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '📤 Enviar Formulario';
-  }
-}
-</script>
- 
 </body>
 </html>
