@@ -446,6 +446,7 @@
     margin: 6px 0 2px 0;
   }
 </style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
  
@@ -1020,17 +1021,98 @@
   <!-- ============================ -->
   <div class="section-title">10. Requisitos de Registro (Documentos a Anexar)</div>
  
+  <div id="estadoSubida" style="display:none;background:#e8f5e9;border:1px solid #4caf50;padding:6px 10px;margin-bottom:6px;font-size:8pt;border-radius:3px;color:#1b5e20;">
+    ✅ <span id="estadoSubidaTexto"></span>
+  </div>
+  <div id="errorSubida" style="display:none;background:#ffebee;border:1px solid #ef9a9a;padding:6px 10px;margin-bottom:6px;font-size:8pt;border-radius:3px;color:#b71c1c;">
+    ❌ <span id="errorSubidaTexto"></span>
+  </div>
+ 
   <div style="border:1px solid #000;padding:5px 8px;margin-bottom:4px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-      <div class="req-item"><input type="checkbox"> Fotocopia del documento de identidad</div>
-      <div class="req-item"><input type="checkbox"> RUT actualizado</div>
-      <div class="req-item"><input type="checkbox"> Dos fotos tamaño cédula</div>
-      <div class="req-item"><input type="checkbox"> Cámara de Comercio (no mayor a 30 días)</div>
-      <div class="req-item"><input type="checkbox"> Desprendible de pago</div>
-      <div class="req-item"><input type="checkbox"> Certificado bancario</div>
-      <div class="req-item"><input type="checkbox"> Carta laboral (si trabaja) o resolución pensión</div>
-      <div class="req-item"><input type="checkbox"> Copia del certificado de curso básico de cooperativismo (si lo tiene)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;" id="docsGrid">
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Fotocopia del documento de identidad"> Fotocopia del documento de identidad
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Fotocopia del documento de identidad" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Fotocopia del documento de identidad" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="RUT actualizado"> RUT actualizado
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="RUT actualizado" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="RUT actualizado" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Dos fotos tamaño cédula"> Dos fotos tamaño cédula
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Dos fotos tamaño cédula" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Dos fotos tamaño cédula" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Cámara de Comercio (no mayor a 30 días)"> Cámara de Comercio (no mayor a 30 días)
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Cámara de Comercio (no mayor a 30 días)" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Cámara de Comercio (no mayor a 30 días)" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Desprendible de pago"> Desprendible de pago
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Desprendible de pago" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Desprendible de pago" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Certificado bancario"> Certificado bancario
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Certificado bancario" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Certificado bancario" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Carta laboral (si trabaja) o resolución pensión"> Carta laboral (si trabaja) o resolución pensión
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Carta laboral (si trabaja) o resolución pensión" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Carta laboral (si trabaja) o resolución pensión" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
+      <div class="req-item" style="display:flex;flex-direction:column;gap:3px;padding:3px 0;">
+        <label style="display:flex;align-items:center;gap:5px;">
+          <input type="checkbox" data-doc="Copia del certificado de curso básico de cooperativismo (si lo tiene)"> Copia del certificado de cooperativismo (si lo tiene)
+        </label>
+        <div style="display:flex;align-items:center;gap:5px;margin-left:18px;">
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" data-doc-file="Copia del certificado de curso básico de cooperativismo (si lo tiene)" style="font-size:7pt;max-width:160px;">
+          <span class="doc-estado" data-doc-estado="Copia del certificado de curso básico de cooperativismo (si lo tiene)" style="font-size:7pt;color:#1b5e20;"></span>
+        </div>
+      </div>
+ 
     </div>
+    <div style="margin-top:6px;font-size:7pt;color:#666;">* Formatos aceptados: PDF, JPG, PNG. Los archivos se guardan automáticamente en Google Drive al enviar el formulario.</div>
   </div>
  
   <!-- ============================ -->
@@ -1081,6 +1163,249 @@
  
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs-dpReKuvbI7-yGb3qvjnJqEXePxJyWM-B5zTWnemhw7Fu8L487xhhKpq9QocN9D1/exec";
+const OAUTH_CLIENT_ID = "62122164645-p8dfugm67n6vbbr152o0bqvessi7hsc2.apps.googleusercontent.com";
+const DRIVE_FOLDER_NAME = "Formularios Proveedores COOCALPRO";
+ 
+let accessToken = null;
+let linkCarpetaDocs = "";
+ 
+// ---- FIRMA DIGITAL ----
+const canvas = document.getElementById('firmaCanvas');
+const ctx = canvas.getContext('2d');
+let dibujando = false;
+let firmaVacia = true;
+ 
+ctx.strokeStyle = '#000'; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+ 
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
+canvas.addEventListener('mousedown',  e => { dibujando=true; firmaVacia=false; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+canvas.addEventListener('mousemove',  e => { if(!dibujando)return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
+canvas.addEventListener('mouseup',    ()=>dibujando=false);
+canvas.addEventListener('mouseleave', ()=>dibujando=false);
+canvas.addEventListener('touchstart', e=>{ e.preventDefault(); dibujando=true; firmaVacia=false; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); },{passive:false});
+canvas.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!dibujando)return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); },{passive:false});
+canvas.addEventListener('touchend',   ()=>dibujando=false);
+function limpiarFirma(){ ctx.clearRect(0,0,canvas.width,canvas.height); firmaVacia=true; }
+ 
+// ---- OAUTH TOKEN ----
+function obtenerToken() {
+  return new Promise((resolve, reject) => {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: OAUTH_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/drive.file',
+      callback: (resp) => {
+        if (resp.error) reject(new Error(resp.error));
+        else resolve(resp.access_token);
+      }
+    });
+    client.requestAccessToken({ prompt: '' });
+  });
+}
+ 
+// ---- OBTENER O CREAR CARPETA EN DRIVE ----
+async function obtenerCarpeta(token, nombre, parentId) {
+  const q = parentId
+    ? `name='${nombre}' and '${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`
+    : `name='${nombre}' and mimeType='application/vnd.google-apps.folder' and trashed=false`;
+ 
+  const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  if (data.files && data.files.length > 0) return data.files[0].id;
+ 
+  const body = { name: nombre, mimeType: 'application/vnd.google-apps.folder' };
+  if (parentId) body.parents = [parentId];
+  const crear = await fetch('https://www.googleapis.com/drive/v3/files', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const nueva = await crear.json();
+  return nueva.id;
+}
+ 
+// ---- SUBIR ARCHIVO A DRIVE ----
+async function subirArchivo(token, file, nombreArchivo, folderId) {
+  const metadata = { name: nombreArchivo, parents: [folderId] };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', file);
+ 
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form
+  });
+  return await res.json();
+}
+ 
+// ---- RECOLECTAR DATOS ----
+function recolectarDatos() {
+  const inputs = [...document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="number"]')];
+  const nombres = [
+    's0_ciudad','s0_fecha_sol',
+    's1_razon_social','s1_nit','s1_direccion','s1_telefonos','s1_celular',
+    's1_pais','s1_municipio','s1_departamento','s1_barrio','s1_estrato',
+    's1_fecha_const','s1_correo','s1_camara','s1_ciiu','s1_productos','s1_rep_legal',
+    's2_ap1','s2_ap2','s2_nom1','s2_nom2',
+    's2_num_id','s2_fecha_exp','s2_exp_en',
+    's2_municipio','s2_departamento','s2_telefonos','s2_celular',
+    's2_correo','s2_anos_servicio',
+    's3_sueldo','s3_arrendamientos_ing','s3_rendimientos','s3_comisiones',
+    's3_otros_ing','s3_cuales_ing','s3_total_ing',
+    's3_gastos_fam','s3_arrendamiento_eg','s3_cuota_creditos',
+    's3_obligaciones','s3_otros_eg','s3_cuales_eg','s3_total_eg',
+    's3_accionistas_nombre','s3_accionistas_id','s3_accionistas_pct',
+    's3_ahorro','s3_vehiculos','s3_inmuebles','s3_otros_act','s3_cuales_act','s3_total_act',
+    's3_deudas_fin','s3_deudas_terc','s3_otros_pas','s3_cuales_pas',
+    's3_total_pas','s3_act_menos_pas','s3_patrimonio',
+    's3_cuales_me','s3_num_cuenta_me','s3_banco_me','s3_moneda','s3_pais_me','s3_ciudad_me',
+    's4_nombre_est','s4_nit_com','s4_dpto_com','s4_pais_com','s4_tel_com','s4_tiempo_est',
+    's4_nombre_ent','s4_producto','s4_dpto_fin','s4_pais_fin','s4_tel_fin',
+    's5p_ap1','s5p_ap2','s5p_nom1','s5p_nom2',
+    's5p_num_doc','s5p_celular','s5p_direccion','s5p_barrio','s5p_empresa','s5p_parentesco',
+    's5f_ap1','s5f_ap2','s5f_nom1','s5f_nom2',
+    's5f_num_doc','s5f_parentesco','s5f_direccion','s5f_barrio',
+    's5f_celular','s5f_telefono','s5f_profesion','s5f_empresa',
+    's6_ver_obs_personal','s6_ver_obs_familiar','s6_fecha_recepcion',
+    's11_fecha_acta','s11_num_acta',
+  ];
+  const datos = {};
+  inputs.forEach((el, i) => { const n = nombres[i] || ('campo_'+i); if(el.value) datos[n]=el.value; });
+ 
+  const radiosMap = {
+    'tipo_contrib':'s1_tipo_contrib','tipo_regimen':'s1_tipo_regimen','tipo_empresa':'s1_tipo_empresa',
+    'tipo_doc_rl':'s2_tipo_doc','moneda_ext':'s3_moneda_ext','cuenta_ext':'s3_cuenta_ext',
+    'ref_com1':'s4_rel_comercio','ref_fin1':'s4_rel_financiero',
+    'doc_ref_p':'s5p_tipo_doc','doc_ref_f':'s5f_tipo_doc',
+    'estado_sol':'s6_estado','protec_datos':'s8_proteccion',
+    'central_riesgo':'s9_centrales','tipo_aprobacion':'s11_aprobacion'
+  };
+  document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+    datos[radiosMap[el.name] || el.name] = el.value;
+  });
+ 
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    if (!el.checked) return;
+    const docNombre = el.getAttribute('data-doc');
+    if (docNombre) { datos['req_'+docNombre.substring(0,20).replace(/\s/g,'_')] = 'Sí'; return; }
+    const txt = (el.closest('label')||el.parentElement||{}).textContent||'';
+    const checkMap = {
+      'Fotocopia':'req_fotocopia','RUT':'req_rut','fotos':'req_fotos',
+      'Cámara':'req_camara','Desprendible':'req_desprendible',
+      'bancario':'req_cert_bancario','laboral':'req_carta_laboral',
+      'cooperativismo':'req_cooperativismo','NO realizo':'s3_declara_no_moneda'
+    };
+    for(const [k,v] of Object.entries(checkMap)) { if(txt.includes(k)) datos[v]='Sí'; }
+  });
+ 
+  const ta = document.querySelector('textarea');
+  if(ta?.value) datos['s11_observaciones'] = ta.value;
+  const ccFirma = document.getElementById('cc_firma').value;
+  if(ccFirma) datos['firma_cc_nit'] = ccFirma;
+  return datos;
+}
+ 
+// ---- ENVIAR FORMULARIO ----
+async function enviarFormulario() {
+  if (firmaVacia) {
+    alert('⚠️ Por favor dibuje la firma del Representante Legal antes de enviar.');
+    canvas.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+ 
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+ 
+  try {
+    const datos = recolectarDatos();
+    const razonSocial = datos['s1_razon_social'] || 'Proveedor';
+    const ts = new Date().toLocaleString('es-CO', { timeZone:'America/Bogota' });
+ 
+    // Verificar si hay archivos para subir
+    const archivos = document.querySelectorAll('input[type="file"]');
+    const tieneArchivos = [...archivos].some(f => f.files.length > 0);
+ 
+    if (tieneArchivos) {
+      btn.textContent = '⏳ Autorizando Drive...';
+      try {
+        accessToken = await obtenerToken();
+      } catch(e) {
+        alert('⚠️ No se pudo autorizar Google Drive. Los archivos no se subirán, pero el formulario sí se enviará.');
+      }
+    }
+ 
+    // Subir documentos a Drive si hay token
+    if (accessToken && tieneArchivos) {
+      btn.textContent = '⏳ Subiendo documentos...';
+ 
+      // Crear carpeta principal y subcarpeta del proveedor
+      const carpetaPrincipalId = await obtenerCarpeta(accessToken, DRIVE_FOLDER_NAME, null);
+      const carpetaProveedorId = await obtenerCarpeta(
+        accessToken,
+        `Docs_${razonSocial.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}`,
+        carpetaPrincipalId
+      );
+ 
+      // Hacer la carpeta pública
+      await fetch(`https://www.googleapis.com/drive/v3/files/${carpetaProveedorId}/permissions`, {
+        method:'POST',
+        headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+        body: JSON.stringify({ role:'reader', type:'anyone' })
+      });
+      linkCarpetaDocs = `https://drive.google.com/drive/folders/${carpetaProveedorId}`;
+ 
+      // Subir cada archivo
+      for (const fileInput of archivos) {
+        if (fileInput.files.length === 0) continue;
+        const file = fileInput.files[0];
+        const docNombre = fileInput.getAttribute('data-doc-file') || 'documento';
+        const nombreArchivo = `${docNombre} - ${razonSocial}.${file.name.split('.').pop()}`;
+        const estadoEl = document.querySelector(`[data-doc-estado="${docNombre}"]`);
+ 
+        try {
+          await subirArchivo(accessToken, file, nombreArchivo, carpetaProveedorId);
+          if (estadoEl) estadoEl.textContent = '✅ Subido';
+          // Marcar el checkbox automáticamente
+          const chk = document.querySelector(`input[data-doc="${docNombre}"]`);
+          if (chk) chk.checked = true;
+        } catch(e) {
+          if (estadoEl) estadoEl.textContent = '❌ Error';
+        }
+      }
+ 
+      datos['link_documentos'] = linkCarpetaDocs;
+    }
+ 
+    btn.textContent = '⏳ Enviando...';
+ 
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        datos,
+        firma: canvas.toDataURL('image/png'),
+        nombreProveedor: razonSocial,
+        timestamp: ts,
+        linkDocumentos: linkCarpetaDocs
+      })
+    });
+ 
+    document.getElementById('modalExito').classList.add('active');
+  } catch(err) {
+    alert('❌ Error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar Formulario';
+  }
+}
+</script>
  
 // ---- FIRMA DIGITAL ----
 const canvas = document.getElementById('firmaCanvas');
