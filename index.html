@@ -6,14 +6,14 @@
 <title>Formulario Registro Proveedores - COOCALPRO</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
+ 
   body {
     font-family: Arial, sans-serif;
     font-size: 9pt;
     background: #e0e0e0;
     color: #000;
   }
-
+ 
   .page {
     width: 216mm;
     min-height: 279mm;
@@ -22,7 +22,7 @@
     padding: 8mm 10mm;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
-
+ 
   /* HEADER */
   .header {
     display: flex;
@@ -104,7 +104,7 @@
     color: #555;
     flex-direction: column;
   }
-
+ 
   /* Ciudad / Fecha top */
   .top-fields {
     display: flex;
@@ -114,7 +114,7 @@
     padding: 2px 0;
   }
   .top-fields span { font-weight: bold; }
-
+ 
   /* SECTION HEADERS */
   .section-title {
     background: #4a4a4a;
@@ -126,7 +126,7 @@
     margin: 6px 0 2px 0;
     letter-spacing: 0.5px;
   }
-
+ 
   /* TABLE-STYLE FORM */
   .form-table {
     width: 100%;
@@ -166,7 +166,7 @@
     resize: none;
     height: 28px;
   }
-
+ 
   /* Checkboxes inline */
   .cb-group {
     display: flex;
@@ -189,7 +189,7 @@
     height: 11px;
     cursor: pointer;
   }
-
+ 
   /* FINANCIAL TABLE */
   .fin-table {
     width: 100%;
@@ -222,7 +222,7 @@
   }
   .fin-table .row-label { font-size: 7.5pt; text-transform: uppercase; }
   .fin-table .total-row td { background: #e8e8e8; font-weight: bold; }
-
+ 
   /* SIGNATURE AREA */
   .signature-area {
     display: flex;
@@ -237,7 +237,7 @@
     font-size: 7.5pt;
     text-transform: uppercase;
   }
-
+ 
   /* LEGAL TEXT */
   .legal-text {
     font-size: 7pt;
@@ -247,7 +247,7 @@
     margin-bottom: 4px;
     text-align: justify;
   }
-
+ 
   /* CONTROL / REQUISITOS */
   .requisitos-grid {
     display: grid;
@@ -263,7 +263,7 @@
     padding: 2px 5px;
   }
   .req-item input[type="checkbox"] { width: 12px; height: 12px; }
-
+ 
   /* PRINT */
   @media print {
     body { background: #fff; }
@@ -272,7 +272,7 @@
     input, select, textarea { color: #000 !important; }
     @page { margin: 5mm; size: letter; }
   }
-
+ 
   /* BOTONES FIJOS */
   .fixed-btns {
     position: fixed;
@@ -308,7 +308,7 @@
   }
   .send-btn:hover { background: #145c2d; }
   .send-btn:disabled { background: #999; cursor: not-allowed; }
-
+ 
   /* FIRMA DIGITAL */
   .firma-digital-box {
     border: 1.5px solid #000;
@@ -344,7 +344,7 @@
     border-radius: 2px;
   }
   .firma-digital-box button:hover { background: #ddd; }
-
+ 
   /* MODAL */
   .modal-overlay {
     display: none;
@@ -375,10 +375,10 @@
     border-radius: 4px;
     cursor: pointer;
   }
-
+ 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
   .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
-
+ 
   /* Verificación control */
   .verificacion-box {
     border: 1px solid #000;
@@ -393,7 +393,7 @@
     font-size: 8.5pt;
     font-weight: bold;
   }
-
+ 
   /* Aprobación */
   .aprobacion-table {
     width: 100%;
@@ -414,7 +414,7 @@
     text-align: center;
     font-weight: bold;
   }
-
+ 
   .huella-box {
     width: 60px;
     height: 70px;
@@ -427,7 +427,7 @@
     color: #666;
     vertical-align: top;
   }
-
+ 
   /* Operaciones moneda */
   .moneda-grid {
     display: grid;
@@ -439,7 +439,7 @@
     padding: 3px 5px;
     margin-bottom: 3px;
   }
-
+ 
   hr.section-divider {
     border: none;
     border-top: 2px solid #4a4a4a;
@@ -448,7 +448,7 @@
 </style>
 </head>
 <body>
-
+ 
 <!-- Modal de éxito -->
 <div class="modal-overlay" id="modalExito">
   <div class="modal-box">
@@ -457,15 +457,15 @@
     <button onclick="document.getElementById('modalExito').classList.remove('active')">Cerrar</button>
   </div>
 </div>
-
+ 
 <!-- Botones fijos -->
 <div class="fixed-btns no-print">
   <button class="send-btn" id="btnEnviar" onclick="enviarFormulario()">📤 Enviar Formulario</button>
   <button class="print-btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
 </div>
-
+ 
 <div class="page">
-
+ 
   <!-- HEADER -->
   <div class="header">
     <div class="header-logo">
@@ -488,18 +488,18 @@
       <p>Vigilado por SUPERSOLIDARIA</p>
     </div>
   </div>
-
+ 
   <!-- Ciudad / Fecha -->
   <div class="top-fields">
     <div><span>CIUDAD:</span> <input type="text" style="border-bottom:1px solid #000;width:160px;font-size:8.5pt;outline:none;font-family:Arial;"></div>
     <div><span>FECHA SOLICITUD:</span> <input type="date" style="border-bottom:1px solid #000;font-size:8.5pt;outline:none;font-family:Arial;"></div>
   </div>
-
+ 
   <!-- ================================ -->
   <!-- 1. IDENTIFICACIÓN DEL PROVEEDOR -->
   <!-- ================================ -->
   <div class="section-title">1. Identificación del Proveedor</div>
-
+ 
   <table class="form-table">
     <tr>
       <td colspan="4">
@@ -602,12 +602,12 @@
       </td>
     </tr>
   </table>
-
+ 
   <!-- =============================== -->
   <!-- 2. DATOS DEL REPRESENTANTE LEGAL -->
   <!-- =============================== -->
   <div class="section-title">2. Datos del Representante Legal</div>
-
+ 
   <table class="form-table">
     <tr>
       <td style="width:22%">
@@ -679,12 +679,12 @@
       </td>
     </tr>
   </table>
-
+ 
   <!-- ============================== -->
   <!-- 3. INFORMACIÓN FINANCIERA      -->
   <!-- ============================== -->
   <div class="section-title">3. Información Financiera</div>
-
+ 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #000;margin-bottom:3px;">
     <div style="border-right:1px solid #000;">
       <table class="fin-table" style="border:none;">
@@ -711,7 +711,7 @@
       </table>
     </div>
   </div>
-
+ 
   <!-- Accionistas -->
   <table class="form-table">
     <tr>
@@ -733,7 +733,7 @@
       </td>
     </tr>
   </table>
-
+ 
   <!-- Balance Personal -->
   <div style="background:#d0d0d0;text-align:center;font-weight:bold;font-size:8.5pt;border:1px solid #000;border-bottom:none;padding:2px;">BALANCE PERSONAL</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #000;margin-bottom:3px;">
@@ -761,7 +761,7 @@
       </table>
     </div>
   </div>
-
+ 
   <!-- Operaciones Moneda Extranjera -->
   <div style="border:1px solid #000;margin-bottom:4px;">
     <div style="background:#d0d0d0;text-align:center;font-weight:bold;font-size:8pt;padding:2px;border-bottom:1px solid #000;">OPERACIONES DE MONEDA EXTRANJERA</div>
@@ -804,12 +804,12 @@
       </tr>
     </table>
   </div>
-
+ 
   <!-- ========================= -->
   <!-- 4. REFERENCIAS COMERCIALES -->
   <!-- ========================= -->
   <div class="section-title">4. Referencias Comerciales</div>
-
+ 
   <div style="font-weight:bold;font-size:8pt;background:#e8e8e8;border:1px solid #000;border-bottom:none;padding:2px 5px;">COMERCIAL</div>
   <table class="form-table">
     <tr>
@@ -850,7 +850,7 @@
       </td>
     </tr>
   </table>
-
+ 
   <div style="font-weight:bold;font-size:8pt;background:#e8e8e8;border:1px solid #000;border-bottom:none;padding:2px 5px;margin-top:3px;">FINANCIERA</div>
   <table class="form-table">
     <tr>
@@ -885,12 +885,12 @@
       </td>
     </tr>
   </table>
-
+ 
   <!-- ==================== -->
   <!-- 5. REFERENCIAS       -->
   <!-- ==================== -->
   <div class="section-title">5. Referencias</div>
-
+ 
   <div style="font-weight:bold;font-size:8pt;background:#e8e8e8;border:1px solid #000;border-bottom:none;padding:2px 5px;">PERSONAL</div>
   <table class="form-table">
     <tr>
@@ -918,7 +918,7 @@
       <td colspan="3"><span class="label">Parentesco (si aplica)</span><input type="text"></td>
     </tr>
   </table>
-
+ 
   <div style="font-weight:bold;font-size:8pt;background:#e8e8e8;border:1px solid #000;border-bottom:none;padding:2px 5px;margin-top:3px;">FAMILIAR</div>
   <table class="form-table">
     <tr>
@@ -948,12 +948,12 @@
       <td colspan="2"><span class="label">Empresa donde Labora</span><input type="text"></td>
     </tr>
   </table>
-
+ 
   <!-- ============================= -->
   <!-- 6. VERIFICACIÓN DE REFERENCIAS -->
   <!-- ============================= -->
   <div class="section-title">6. Verificación de Referencias</div>
-
+ 
   <div class="verificacion-box">
     <div class="ver-row">
       <span style="min-width:70px">PERSONAL:</span>
@@ -981,16 +981,16 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- ============================ -->
   <!-- 7. LAVADO DE ACTIVOS         -->
   <!-- ============================ -->
   <div class="section-title">7. Lavado de Activos</div>
-
+ 
   <div class="legal-text">
     El solicitante manifiesta bajo la gravedad de juramento que se entiende prestado con la suscripción de la presente declaración, que los recursos que componen su patrimonio no provienen del lavado de activos, financiación del terrorismo, narcotráfico, captación ilegal de dineros y en general de cualquier actividad ilícita, de igual manera manifiesta que los recursos entregados a la cooperativa como: aportes, cuenta de ahorros o pago de obligación financiera con la entidad, no serán destinados a ninguna de las actividades antes descritas. Para efectos de lo anterior el Solicitante autoriza expresamente a COOCALPRO para que consulte los listados, sistemas de información y base de datos a las que haya lugar y, de encontrar algún reporte, COOCALPRO procederá a adelantar acciones contractuales y/o legales que correspondan. COOCALPRO se obliga a realizar todas las actividades encaminadas a asegurar que todos sus asociados, y los recursos de estos, no se encuentren relacionados o provengan, de actividades ilícitas, particularmente, de las anteriormente enunciadas.
   </div>
-
+ 
   <!-- ============================ -->
   <!-- 8. PROTECCIÓN DE DATOS       -->
   <!-- ============================ -->
@@ -1002,7 +1002,7 @@
       <label style="display:flex;align-items:center;gap:4px;font-size:8pt;font-weight:bold;"><input type="radio" name="protec_datos" value="no"> No acepto</label>
     </div>
   </div>
-
+ 
   <!-- ============================================= -->
   <!-- 9. INCLUSIÓN Y CONSULTA CENTRALES DE RIESGO  -->
   <!-- ============================================= -->
@@ -1014,12 +1014,12 @@
       <label style="display:flex;align-items:center;gap:4px;font-size:8pt;font-weight:bold;"><input type="radio" name="central_riesgo" value="no"> No</label>
     </div>
   </div>
-
+ 
   <!-- ============================ -->
   <!-- 10. DOCUMENTOS REQUERIDOS    -->
   <!-- ============================ -->
   <div class="section-title">10. Requisitos de Registro (Documentos a Anexar)</div>
-
+ 
   <div style="border:1px solid #000;padding:5px 8px;margin-bottom:4px;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
       <div class="req-item"><input type="checkbox"> Fotocopia del documento de identidad</div>
@@ -1032,12 +1032,12 @@
       <div class="req-item"><input type="checkbox"> Copia del certificado de curso básico de cooperativismo (si lo tiene)</div>
     </div>
   </div>
-
+ 
   <!-- ============================ -->
   <!-- 11. CONTROL / APROBACIÓN     -->
   <!-- ============================ -->
   <div class="section-title">11. Control</div>
-
+ 
   <table class="aprobacion-table">
     <tr>
       <th>Tipo de Aprobación</th>
@@ -1056,7 +1056,7 @@
       <td style="min-height:50px;"><textarea style="width:100%;height:50px;border:none;outline:none;font-family:Arial;font-size:8pt;resize:none;background:transparent;"></textarea></td>
     </tr>
   </table>
-
+ 
   <!-- FIRMA REPRESENTANTE LEGAL -->
   <div style="margin-top:14px;">
     <div class="firma-digital-box" style="max-width:340px;margin:0 auto;">
@@ -1071,34 +1071,37 @@
       </div>
     </div>
   </div>
-
+ 
   <div style="text-align:center;font-size:6.5pt;color:#555;margin-top:8px;border-top:1px solid #ccc;padding-top:4px;">
     Certifico que la información suministrada es verídica y autorizo su verificación, así mismo me comprometo a actualizarla anualmente.<br>
     En constancia de haber leído, entendido y aceptado lo anterior, firmo el presente documento.
   </div>
-
+ 
 </div><!-- fin .page -->
-
+ 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs-dpReKuvbI7-yGb3qvjnJqEXePxJyWM-B5zTWnemhw7Fu8L487xhhKpq9QocN9D1/exec";
-
+const OAUTH_CLIENT_ID = "62122164645-p8dfugm67n6vbbr152o0bqvessi7hsc2.apps.googleusercontent.com";
+const DRIVE_FOLDER_NAME = "Formularios Proveedores COOCALPRO";
+ 
 // ---- FIRMA DIGITAL ----
 const canvas = document.getElementById('firmaCanvas');
 const ctx = canvas.getContext('2d');
 let dibujando = false;
 let firmaVacia = true;
-
+ 
 ctx.strokeStyle = '#000';
 ctx.lineWidth = 1.8;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
-
+ 
 function getPos(e) {
   const rect = canvas.getBoundingClientRect();
   const src = e.touches ? e.touches[0] : e;
   return { x: src.clientX - rect.left, y: src.clientY - rect.top };
 }
-
+ 
 canvas.addEventListener('mousedown',  e => { dibujando = true; firmaVacia = false; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
 canvas.addEventListener('mousemove',  e => { if (!dibujando) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
 canvas.addEventListener('mouseup',    () => dibujando = false);
@@ -1106,9 +1109,9 @@ canvas.addEventListener('mouseleave', () => dibujando = false);
 canvas.addEventListener('touchstart', e => { e.preventDefault(); dibujando = true; firmaVacia = false; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, {passive:false});
 canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!dibujando) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }, {passive:false});
 canvas.addEventListener('touchend',   () => dibujando = false);
-
+ 
 function limpiarFirma() { ctx.clearRect(0, 0, canvas.width, canvas.height); firmaVacia = true; }
-
+ 
 // ---- RECOLECTAR DATOS ----
 function recolectarDatos() {
   const datos = {};
@@ -1141,80 +1144,132 @@ function recolectarDatos() {
   if (ccFirma) datos['CC/NIT Firmante'] = ccFirma;
   return datos;
 }
-
-// ---- INCRUSTAR DATOS EN EL HTML PARA ENVIAR ----
+ 
+// ---- GENERAR HTML CON DATOS ----
 function generarHTMLConDatos() {
-  // Clonar el documento completo
   const clone = document.documentElement.cloneNode(true);
-
-  // Incrustar la firma como imagen en el canvas clonado
   const firmaImg = document.createElement('img');
   firmaImg.src = canvas.toDataURL('image/png');
-  firmaImg.style.cssText = 'display:block;margin:4px auto;border:1px dashed #999;';
-  firmaImg.width = 320;
-  firmaImg.height = 90;
+  firmaImg.style.cssText = 'display:block;margin:4px auto;border:1px dashed #999;max-width:320px;';
   const canvasClone = clone.querySelector('#firmaCanvas');
   if (canvasClone) canvasClone.replaceWith(firmaImg);
-
-  // Quitar botones y scripts del clon
   clone.querySelectorAll('.fixed-btns, .modal-overlay, script').forEach(el => el.remove());
-
-  // Agregar estilos para que se vea bien al imprimir
-  const estiloImpresion = clone.ownerDocument.createElement('style');
-  estiloImpresion.textContent = `
-    @media print { body { margin: 0; } }
-    input, textarea, select { border: none !important; background: transparent !important; }
-    input[type="radio"], input[type="checkbox"] { display: inline; }
+  const estilos = clone.ownerDocument.createElement('style');
+  estilos.textContent = `
+    @media print { body { margin:0; } .no-print { display:none; } }
+    input, textarea { border:none !important; background:transparent !important; font-family:Arial; }
+    input[type="radio"], input[type="checkbox"] { display:inline; }
+    .firma-digital-box button { display:none; }
   `;
-  clone.querySelector('head').appendChild(estiloImpresion);
-
+  clone.querySelector('head').appendChild(estilos);
   return '<!DOCTYPE html>' + clone.outerHTML;
 }
-
+ 
+// ---- SUBIR A GOOGLE DRIVE ----
+async function subirADrive(htmlContent, nombreArchivo, accessToken) {
+  // Buscar o crear carpeta
+  const buscarCarpeta = await fetch(
+    `https://www.googleapis.com/drive/v3/files?q=name='${DRIVE_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  const carpetaData = await buscarCarpeta.json();
+  let folderId;
+ 
+  if (carpetaData.files && carpetaData.files.length > 0) {
+    folderId = carpetaData.files[0].id;
+  } else {
+    const crearCarpeta = await fetch('https://www.googleapis.com/drive/v3/files', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: DRIVE_FOLDER_NAME, mimeType: 'application/vnd.google-apps.folder' })
+    });
+    const nuevaCarpeta = await crearCarpeta.json();
+    folderId = nuevaCarpeta.id;
+  }
+ 
+  // Subir el archivo HTML
+  const metadata = { name: nombreArchivo, mimeType: 'text/html', parents: [folderId] };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', new Blob([htmlContent], { type: 'text/html' }));
+ 
+  const subir = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: form
+  });
+  const archivo = await subir.json();
+ 
+  // Hacer el archivo público (solo lectura con link)
+  await fetch(`https://www.googleapis.com/drive/v3/files/${archivo.id}/permissions`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: 'reader', type: 'anyone' })
+  });
+ 
+  return `https://drive.google.com/file/d/${archivo.id}/view`;
+}
+ 
 // ---- ENVIAR ----
 async function enviarFormulario() {
   if (firmaVacia) {
     alert('⚠️ Por favor dibuje la firma del Representante Legal antes de enviar.');
-    canvas.scrollIntoView({behavior:'smooth', block:'center'});
+    canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-
+ 
   const btn = document.getElementById('btnEnviar');
   btn.disabled = true;
-  btn.textContent = '⏳ Preparando formulario...';
-
+  btn.textContent = '⏳ Autorizando...';
+ 
   try {
-    const datos           = recolectarDatos();
-    const firmaBase64     = canvas.toDataURL('image/png');
-    const htmlFormulario  = generarHTMLConDatos();
-    const razonSocial     = datos['Nombre o Razón Social'] || 'Proveedor';
-
-    btn.textContent = '⏳ Enviando...';
-
-    const payload = {
-      datos:            datos,
-      firma:            firmaBase64,
-      htmlFormulario:   htmlFormulario,
-      nombreProveedor:  razonSocial,
-      timestamp:        new Date().toLocaleString('es-CO', {timeZone:'America/Bogota'})
-    };
-
+    // Pedir token OAuth al proveedor (Google Sign-In popup)
+    const accessToken = await new Promise((resolve, reject) => {
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: OAUTH_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/drive.file',
+        callback: (resp) => {
+          if (resp.error) reject(new Error(resp.error));
+          else resolve(resp.access_token);
+        }
+      });
+      client.requestAccessToken({ prompt: 'consent' });
+    });
+ 
+    btn.textContent = '⏳ Guardando en Drive...';
+ 
+    const datos         = recolectarDatos();
+    const razonSocial   = datos['Nombre o Razón Social'] || 'Proveedor';
+    const ts            = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+    const htmlFormulario = generarHTMLConDatos();
+    const nombreArchivo  = `Proveedor_${razonSocial.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}.html`;
+ 
+    const linkDrive = await subirADrive(htmlFormulario, nombreArchivo, accessToken);
+ 
+    btn.textContent = '⏳ Enviando notificación...';
+ 
+    // Enviar solo datos + link al Apps Script
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        datos,
+        linkFormulario: linkDrive,
+        nombreProveedor: razonSocial,
+        timestamp: ts
+      })
     });
-
+ 
     document.getElementById('modalExito').classList.add('active');
   } catch (err) {
-    alert('❌ Error al enviar. Verifique su conexión e intente de nuevo.\n' + err.message);
+    alert('❌ Error: ' + err.message);
   } finally {
     btn.disabled = false;
     btn.textContent = '📤 Enviar Formulario';
   }
 }
 </script>
-
+ 
 </body>
 </html>
