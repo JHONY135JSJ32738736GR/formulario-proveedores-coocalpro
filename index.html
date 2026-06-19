@@ -446,7 +446,6 @@
     margin: 6px 0 2px 0;
   }
 </style>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
  
@@ -1112,6 +1111,13 @@
       </div>
  
     </div>
+    <div style="margin-top:8px;padding:8px;background:#e8f0fb;border:1px solid #2c5282;border-radius:4px;text-align:center;">
+      <p style="font-size:8pt;color:#333;margin-bottom:6px;">📎 Una vez marcados los documentos, súbalos haciendo clic aquí:</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScppACHzL-J6o1EU65ImiyNgXVjsIqtHKNv_rPbaKGC6619dg/viewform" target="_blank"
+         style="display:inline-block;background:#2c5282;color:#fff;padding:8px 20px;border-radius:4px;text-decoration:none;font-size:9pt;font-weight:bold;">
+        📤 Subir Documentos a Google Drive
+      </a>
+    </div>
     <div style="margin-top:6px;font-size:7pt;color:#666;">* Formatos aceptados: PDF, JPG, PNG. Los archivos se guardan automáticamente en Google Drive al enviar el formulario.</div>
   </div>
  
@@ -1163,8 +1169,131 @@
  
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs-dpReKuvbI7-yGb3qvjnJqEXePxJyWM-B5zTWnemhw7Fu8L487xhhKpq9QocN9D1/exec";
-const OAUTH_CLIENT_ID = "62122164645-p8dfugm67n6vbbr152o0bqvessi7hsc2.apps.googleusercontent.com";
-const DRIVE_FOLDER_NAME = "Formularios Proveedores COOCALPRO";
+ 
+// ---- FIRMA DIGITAL ----
+const canvas = document.getElementById('firmaCanvas');
+const ctx = canvas.getContext('2d');
+let dibujando = false;
+let firmaVacia = true;
+ 
+ctx.strokeStyle = '#000'; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+ 
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
+canvas.addEventListener('mousedown',  e => { dibujando=true; firmaVacia=false; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+canvas.addEventListener('mousemove',  e => { if(!dibujando)return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
+canvas.addEventListener('mouseup',    ()=>dibujando=false);
+canvas.addEventListener('mouseleave', ()=>dibujando=false);
+canvas.addEventListener('touchstart', e=>{ e.preventDefault(); dibujando=true; firmaVacia=false; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); },{passive:false});
+canvas.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!dibujando)return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); },{passive:false});
+canvas.addEventListener('touchend',   ()=>dibujando=false);
+function limpiarFirma(){ ctx.clearRect(0,0,canvas.width,canvas.height); firmaVacia=true; }
+ 
+// ---- RECOLECTAR DATOS ----
+function recolectarDatos() {
+  const inputs = [...document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="number"]')];
+  const nombres = [
+    's0_ciudad','s0_fecha_sol',
+    's1_razon_social','s1_nit','s1_direccion','s1_telefonos','s1_celular',
+    's1_pais','s1_municipio','s1_departamento','s1_barrio','s1_estrato',
+    's1_fecha_const','s1_correo','s1_camara','s1_ciiu','s1_productos','s1_rep_legal',
+    's2_ap1','s2_ap2','s2_nom1','s2_nom2',
+    's2_num_id','s2_fecha_exp','s2_exp_en',
+    's2_municipio','s2_departamento','s2_telefonos','s2_celular',
+    's2_correo','s2_anos_servicio',
+    's3_sueldo','s3_arrendamientos_ing','s3_rendimientos','s3_comisiones',
+    's3_otros_ing','s3_cuales_ing','s3_total_ing',
+    's3_gastos_fam','s3_arrendamiento_eg','s3_cuota_creditos',
+    's3_obligaciones','s3_otros_eg','s3_cuales_eg','s3_total_eg',
+    's3_accionistas_nombre','s3_accionistas_id','s3_accionistas_pct',
+    's3_ahorro','s3_vehiculos','s3_inmuebles','s3_otros_act','s3_cuales_act','s3_total_act',
+    's3_deudas_fin','s3_deudas_terc','s3_otros_pas','s3_cuales_pas',
+    's3_total_pas','s3_act_menos_pas','s3_patrimonio',
+    's3_cuales_me','s3_num_cuenta_me','s3_banco_me','s3_moneda','s3_pais_me','s3_ciudad_me',
+    's4_nombre_est','s4_nit_com','s4_dpto_com','s4_pais_com','s4_tel_com','s4_tiempo_est',
+    's4_nombre_ent','s4_producto','s4_dpto_fin','s4_pais_fin','s4_tel_fin',
+    's5p_ap1','s5p_ap2','s5p_nom1','s5p_nom2',
+    's5p_num_doc','s5p_celular','s5p_direccion','s5p_barrio','s5p_empresa','s5p_parentesco',
+    's5f_ap1','s5f_ap2','s5f_nom1','s5f_nom2',
+    's5f_num_doc','s5f_parentesco','s5f_direccion','s5f_barrio',
+    's5f_celular','s5f_telefono','s5f_profesion','s5f_empresa',
+    's6_ver_obs_personal','s6_ver_obs_familiar','s6_fecha_recepcion',
+    's11_fecha_acta','s11_num_acta',
+  ];
+  const datos = {};
+  inputs.forEach((el, i) => { const n = nombres[i]||('campo_'+i); if(el.value) datos[n]=el.value; });
+ 
+  const radiosMap = {
+    'tipo_contrib':'s1_tipo_contrib','tipo_regimen':'s1_tipo_regimen','tipo_empresa':'s1_tipo_empresa',
+    'tipo_doc_rl':'s2_tipo_doc','moneda_ext':'s3_moneda_ext','cuenta_ext':'s3_cuenta_ext',
+    'ref_com1':'s4_rel_comercio','ref_fin1':'s4_rel_financiero',
+    'doc_ref_p':'s5p_tipo_doc','doc_ref_f':'s5f_tipo_doc',
+    'estado_sol':'s6_estado','protec_datos':'s8_proteccion',
+    'central_riesgo':'s9_centrales','tipo_aprobacion':'s11_aprobacion'
+  };
+  document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+    datos[radiosMap[el.name]||el.name] = el.value;
+  });
+ 
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    if(!el.checked) return;
+    const docNombre = el.getAttribute('data-doc');
+    if(docNombre) { datos['req_'+docNombre.substring(0,20).replace(/\s/g,'_')]='Sí'; return; }
+    const txt = (el.closest('label')||el.parentElement||{}).textContent||'';
+    const checkMap = {
+      'Fotocopia':'req_fotocopia','RUT':'req_rut','fotos':'req_fotos',
+      'Cámara':'req_camara','Desprendible':'req_desprendible',
+      'bancario':'req_cert_bancario','laboral':'req_carta_laboral',
+      'cooperativismo':'req_cooperativismo','NO realizo':'s3_declara_no_moneda'
+    };
+    for(const [k,v] of Object.entries(checkMap)) { if(txt.includes(k)) datos[v]='Sí'; }
+  });
+ 
+  const ta = document.querySelector('textarea');
+  if(ta?.value) datos['s11_observaciones'] = ta.value;
+  const ccFirma = document.getElementById('cc_firma').value;
+  if(ccFirma) datos['firma_cc_nit'] = ccFirma;
+  return datos;
+}
+ 
+// ---- ENVIAR ----
+async function enviarFormulario() {
+  if(firmaVacia) {
+    alert('⚠️ Por favor dibuje la firma del Representante Legal antes de enviar.');
+    canvas.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  try {
+    const datos = recolectarDatos();
+    const razonSocial = datos['s1_razon_social'] || 'Proveedor';
+    const ts = new Date().toLocaleString('es-CO', {timeZone:'America/Bogota'});
+ 
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        datos,
+        firma: canvas.toDataURL('image/png'),
+        nombreProveedor: razonSocial,
+        timestamp: ts
+      })
+    });
+    document.getElementById('modalExito').classList.add('active');
+  } catch(err) {
+    alert('❌ Error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar Formulario';
+  }
+}
+</script>
  
 let accessToken = null;
 let linkCarpetaDocs = "";
