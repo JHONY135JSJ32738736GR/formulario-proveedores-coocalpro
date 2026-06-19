@@ -1,3 +1,5 @@
+
+Formulario proveedores coocalpro v4 · HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1217,7 +1219,21 @@ function recolectarDatos() {
   document.querySelectorAll('input[type="checkbox"]').forEach(el => {
     if(!el.checked) return;
     const docNombre = el.getAttribute('data-doc');
-    if(docNombre) { datos['req_'+docNombre.substring(0,20).replace(/\s/g,'_')]='Sí'; return; }
+    if(docNombre) {
+      const docKeyMap = {
+        'Fotocopia del documento de identidad': 'req_fotocopia',
+        'RUT actualizado': 'req_rut',
+        'Dos fotos tamaño cédula': 'req_fotos',
+        'Cámara de Comercio (no mayor a 30 días)': 'req_camara',
+        'Desprendible de pago': 'req_desprendible',
+        'Certificado bancario': 'req_cert_bancario',
+        'Carta laboral (si trabaja) o resolución pensión': 'req_carta_laboral',
+        'Copia del certificado de curso básico de cooperativismo (si lo tiene)': 'req_cooperativismo'
+      };
+      const key = docKeyMap[docNombre];
+      if (key) datos[key] = 'Sí';
+      return;
+    }
     const txt = (el.closest('label')||el.parentElement||{}).textContent||'';
     const checkMap = {
       'Fotocopia':'req_fotocopia','RUT':'req_rut','fotos':'req_fotos',
@@ -1273,4 +1289,3 @@ async function enviarFormulario() {
  
 </body>
 </html>
- 
