@@ -977,7 +977,14 @@
       <label style="display:flex;align-items:center;gap:3px;font-size:8pt"><input type="radio" name="estado_sol" value="aprobada"> Aprobada</label>
       <label style="display:flex;align-items:center;gap:3px;font-size:8pt"><input type="radio" name="estado_sol" value="no_aprobada"> No Aprobada</label>
       <div style="flex:1;text-align:right;">
-        <div style="border-top:1px solid #000;width:180px;display:inline-block;font-size:7.5pt;text-align:center;">Firma Verificación de Referencias</div>
+        <div class="firma-digital-box" style="max-width:260px;margin-left:auto;">
+          <div class="firma-label">Firma Verificación de Referencias</div>
+          <canvas id="firmaVerifCanvas" width="240" height="70"></canvas>
+          <div style="font-size:6.5pt;color:#777;margin-bottom:2px;">Dibuje su firma en el recuadro</div>
+          <div class="firma-actions">
+            <button type="button" onclick="limpiarFirmaVerif()">🗑️ Borrar firma</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1168,7 +1175,27 @@ canvas.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!dibujando)ret
 canvas.addEventListener('touchend',   ()=>dibujando=false);
 function limpiarFirma(){ ctx.clearRect(0,0,canvas.width,canvas.height); firmaVacia=true; }
  
-// ---- RECOLECTAR DATOS ----
+// ---- FIRMA VERIFICACIÓN DE REFERENCIAS ----
+const canvasVerif = document.getElementById('firmaVerifCanvas');
+const ctxVerif = canvasVerif.getContext('2d');
+let dibujandoVerif = false;
+ 
+ctxVerif.strokeStyle = '#000'; ctxVerif.lineWidth = 1.8; ctxVerif.lineCap = 'round'; ctxVerif.lineJoin = 'round';
+ 
+canvasVerif.addEventListener('mousedown',  e => { dibujandoVerif=true; const p=getPos2(e,canvasVerif); ctxVerif.beginPath(); ctxVerif.moveTo(p.x,p.y); });
+canvasVerif.addEventListener('mousemove',  e => { if(!dibujandoVerif)return; const p=getPos2(e,canvasVerif); ctxVerif.lineTo(p.x,p.y); ctxVerif.stroke(); });
+canvasVerif.addEventListener('mouseup',    ()=>dibujandoVerif=false);
+canvasVerif.addEventListener('mouseleave', ()=>dibujandoVerif=false);
+canvasVerif.addEventListener('touchstart', e=>{ e.preventDefault(); dibujandoVerif=true; const p=getPos2(e,canvasVerif); ctxVerif.beginPath(); ctxVerif.moveTo(p.x,p.y); },{passive:false});
+canvasVerif.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!dibujandoVerif)return; const p=getPos2(e,canvasVerif); ctxVerif.lineTo(p.x,p.y); ctxVerif.stroke(); },{passive:false});
+canvasVerif.addEventListener('touchend',   ()=>dibujandoVerif=false);
+function limpiarFirmaVerif(){ ctxVerif.clearRect(0,0,canvasVerif.width,canvasVerif.height); }
+ 
+function getPos2(e, cvs) {
+  const rect = cvs.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
 function recolectarDatos() {
   const inputs = [...document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="number"]')];
   const nombres = [
@@ -1271,6 +1298,7 @@ async function enviarFormulario() {
       body: JSON.stringify({
         datos,
         firma: canvas.toDataURL('image/png'),
+        firmaVerif: canvasVerif.toDataURL('image/png'),
         nombreProveedor: razonSocial,
         timestamp: ts
       })
